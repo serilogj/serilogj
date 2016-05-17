@@ -161,7 +161,7 @@ public class Log {
 	 Log.Verbose("Staring into space, wondering if we're alone.");
 	 </example>
 	*/
-	public static void Verbose(String messageTemplate, Object... propertyValues) {
+	public static void verbose(String messageTemplate, Object... propertyValues) {
 		getLogger().verbose(messageTemplate, propertyValues);
 	}
 
