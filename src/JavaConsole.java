@@ -1,4 +1,5 @@
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import serilogj.Log;
@@ -42,11 +43,5 @@ public class JavaConsole {
 		Log.warning("Hello {world} {@user}", "wereld", user);
 		Log.error("Hello {world} {@user}", "wereld", user);
 		Log.fatal("Hello {world} {@user}", "wereld", user);
-
-		
-		File file = new File(".");
-		for(String f : file.list()) {
-			Log.verbose("{filename}", f);
-		}
 	}
 }

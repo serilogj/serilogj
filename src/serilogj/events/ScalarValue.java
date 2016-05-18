@@ -2,6 +2,8 @@ package serilogj.events;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.*;
 
 import serilogj.debugging.SelfLog;
@@ -36,6 +38,17 @@ public class ScalarValue extends LogEventPropertyValue {
 			{
 				SimpleDateFormat formatter = locale == null ? new SimpleDateFormat(format) : new SimpleDateFormat(format, locale);
 				output.write(formatter.format(value));
+			}
+			catch(Exception e)
+			{
+				output.write(value.toString());
+				SelfLog.writeLine("Invalid date format \"%s\", exception %s", format, e.getMessage());
+			}
+		} else if (value instanceof TemporalAccessor && format != null && format != "") {
+			try
+			{
+				DateTimeFormatter formatter = locale == null ? DateTimeFormatter.ofPattern(format) : DateTimeFormatter.ofPattern(format, locale);
+				output.write(formatter.format((TemporalAccessor)value));
 			}
 			catch(Exception e)
 			{
