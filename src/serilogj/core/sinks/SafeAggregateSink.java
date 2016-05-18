@@ -22,6 +22,17 @@ import serilogj.debugging.SelfLog;
 public class SafeAggregateSink implements ILogEventSink {
 	private ArrayList<ILogEventSink> sinks;	
 	
+	public SafeAggregateSink(ILogEventSink[] sinks) {
+		if (sinks == null) 	{
+			throw new IllegalArgumentException("sinks");
+		}
+
+		this.sinks = new ArrayList<ILogEventSink>();
+		for(ILogEventSink sink : sinks) {
+			this.sinks.add(sink);
+		}
+	}
+	
 	public SafeAggregateSink(ArrayList<ILogEventSink> sinks) {
 		if (sinks == null) 	{
 			throw new IllegalArgumentException("sinks");

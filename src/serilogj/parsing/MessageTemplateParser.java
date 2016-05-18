@@ -126,7 +126,7 @@ public class MessageTemplateParser implements IMessageTemplateParser {
 			propertyName = propertyName.substring(1);
 		}
 
-		if (propertyName == "" || !isValidInPropertyName(propertyName.charAt(0)))
+		if (propertyName.equals("") || !isValidInPropertyName(propertyName.charAt(0)))
 		{
 			return new ParseResult(next, new TextToken(rawText, first));
 		}

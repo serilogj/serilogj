@@ -45,7 +45,7 @@ public class TextToken extends MessageTemplateToken {
 	@Override
 	public boolean equals(Object obj) {
 		TextToken sv = (TextToken)((obj instanceof TextToken) ? obj : null);
-		return sv != null && text == sv.text;
+		return sv != null && text.equals(sv.text);
 	}
 	
 	@Override

@@ -33,7 +33,7 @@ public class ScalarValue extends LogEventPropertyValue {
 			output.write("\"");
 			output.write(str.replace("\"", "\\\""));
 			output.write("\"");
-		} else if (value instanceof Date && format != null && format != "") {
+		} else if (value instanceof Date && format != null && !format.equals("")) {
 			try
 			{
 				SimpleDateFormat formatter = locale == null ? new SimpleDateFormat(format) : new SimpleDateFormat(format, locale);
@@ -44,7 +44,7 @@ public class ScalarValue extends LogEventPropertyValue {
 				output.write(value.toString());
 				SelfLog.writeLine("Invalid date format \"%s\", exception %s", format, e.getMessage());
 			}
-		} else if (value instanceof TemporalAccessor && format != null && format != "") {
+		} else if (value instanceof TemporalAccessor && format != null && format.equals("")) {
 			try
 			{
 				DateTimeFormatter formatter = locale == null ? DateTimeFormatter.ofPattern(format) : DateTimeFormatter.ofPattern(format, locale);

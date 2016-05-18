@@ -24,7 +24,7 @@ public class LiteralStringValue extends LogEventPropertyValue {
 	@Override
 	public boolean equals(Object obj) {
 		LiteralStringValue sv = (LiteralStringValue)((obj instanceof LiteralStringValue) ? obj : null);
-		return sv != null && value == sv.value;
+		return sv != null && value.equals(sv.value);
 	}
 	
 	@Override

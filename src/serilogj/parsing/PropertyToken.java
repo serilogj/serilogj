@@ -114,11 +114,7 @@ public class PropertyToken extends MessageTemplateToken {
 	public boolean equals(Object obj) {
 		PropertyToken sv = (PropertyToken)((obj instanceof PropertyToken) ? obj : null);
 		return sv != null && 
-			   propertyName == sv.propertyName &&
-			   rawText == sv.rawText &&
-			   destructuring == sv.destructuring &&
-			   format == sv.format &&
-			   alignment == sv.alignment;
+			   rawText.equals(sv.rawText);
 	}
 	
 	@Override

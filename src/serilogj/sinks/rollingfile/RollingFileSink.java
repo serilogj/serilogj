@@ -72,7 +72,7 @@ public class RollingFileSink implements ILogEventSink, Closeable {
 
 		File folder = new File(roller.getLogFileDirectory());
 		ArrayList<RollingLogFile> files = roller.getMatches(folder.list());
-		files.removeIf(f -> f.getDate() != today);
+		files.removeIf(f -> !f.getDate().equals(today));
 		
 		int sequenceNumber = 0;
 		if (files.size() > 0) {
@@ -120,7 +120,7 @@ public class RollingFileSink implements ILogEventSink, Closeable {
 
 		// Add our current log file (if it already exists, then first remove it)
 		String currentFilename = new File(currentFilePath).getName();
-		files.removeIf(f -> f.getFilename().toLowerCase() == currentFilename.toLowerCase());
+		files.removeIf(f -> f.getFilename().compareToIgnoreCase(currentFilename) == 0);
 		files.addAll(roller.getMatches(new String[] { currentFilename }));
 		
 		// Sort it 
@@ -128,7 +128,7 @@ public class RollingFileSink implements ILogEventSink, Closeable {
 		files.sort(new Comparator<RollingLogFile>() {
 			@Override
 			public int compare(RollingLogFile o1, RollingLogFile o2) {
-				if (o1.getDate().isEqual((ChronoLocalDate) o2))
+				if (o1.getDate().isEqual(o2.getDate()))
 				{
 					return o1.getSequenceNumber() - o2.getSequenceNumber();
 				}

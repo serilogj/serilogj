@@ -40,6 +40,8 @@ public class TemplatedPathRoller {
     private Pattern filenameMatcher;
     private String directorySearchPattern;
     private String logFileDirectory;
+    private String prefix;
+    private String suffix;
     
     public TemplatedPathRoller(String pathTemplate) {
     	if (pathTemplate == null) {
@@ -51,7 +53,7 @@ public class TemplatedPathRoller {
     
     	File file = new File(pathTemplate);
     	String directory = file.getParent();
-    	if (directory == null || directory == "") {
+    	if (directory == null || directory.equals("")) {
     		directory = System.getProperty("user.dir");
     	}
     	
@@ -67,7 +69,7 @@ public class TemplatedPathRoller {
     	}
     	
     	String filenameTemplate = file.getName();
-    	if (filenameTemplate == null || filenameTemplate == "") {
+    	if (filenameTemplate == null || filenameTemplate.equals("")) {
     		throw new IllegalArgumentException("pathTemplate");
     	}
     	
@@ -83,8 +85,8 @@ public class TemplatedPathRoller {
     	}
     
     	int indexOfSpecifier = filenameTemplate.toLowerCase().indexOf(DateSpecifier);
-    	String prefix = filenameTemplate.substring(0, indexOfSpecifier);
-    	String suffix = filenameTemplate.substring(indexOfSpecifier + DateSpecifier.length());
+    	prefix = filenameTemplate.substring(0, indexOfSpecifier);
+    	suffix = filenameTemplate.substring(indexOfSpecifier + DateSpecifier.length());
     	
     	filenameMatcher = Pattern.compile(
     			"^" + 
@@ -112,7 +114,7 @@ public class TemplatedPathRoller {
     	if (sequenceNumber != 0) {
     		tok += "_" + String.format("%03d", sequenceNumber);
     	}
-    	return pathTemplate.replace(DateSpecifier, tok);
+    	return Paths.get(logFileDirectory, prefix + tok + suffix).toString();
     }
     
     public ArrayList<RollingLogFile> getMatches(String[] filenames) {
