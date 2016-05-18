@@ -13,7 +13,7 @@ public class JavaConsole {
 		
 		Log.setLogger(new LoggerConfiguration()
 			.writeTo(coloredConsole())
-			.writeTo(rollingFile("test-{Date}.log"))
+			.writeTo(rollingFile("test-{Date}.log"), LogEventLevel.Information)
 			.setMinimumLevel(LogEventLevel.Verbose)
 			.createLogger());
 		

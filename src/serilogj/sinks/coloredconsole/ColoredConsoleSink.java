@@ -83,7 +83,7 @@ public class ColoredConsoleSink implements ILogEventSink {
 				}
 			}
 		} finally {
-			System.out.println(ANSI_RESET);
+			System.out.print(ANSI_RESET);
 		}
 	}
 	

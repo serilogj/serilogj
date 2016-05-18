@@ -57,7 +57,7 @@ public class LoggerConfiguration {
 		if (minimumLevel.ordinal() > LevelAlias.Minimum.ordinal()) {
 			sink = new RestrictedSink(sink, new LoggingLevelSwitch(minimumLevel));
 		}
-		return this;
+		return writeTo(sink);
 	}
 	
 	public LoggerConfiguration writeTo(ILogEventSink sink, LoggingLevelSwitch levelSwitch) {
@@ -69,7 +69,7 @@ public class LoggerConfiguration {
 		}
 		
 		sink = new RestrictedSink(sink, levelSwitch);
-		return this;
+		return writeTo(sink);
 	}
 
 	public LoggerConfiguration asScalar(Class<?> type) {
