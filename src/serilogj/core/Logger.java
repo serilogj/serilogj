@@ -116,7 +116,7 @@ public class Logger implements ILogger, ILogEventSink {
 		if (!isEnabled(level)) {
 			return;
 		}
-		if (propertyValues != null && propertyValues.length == 1 && propertyValues[0].getClass() == Object[].class) {
+		if (propertyValues != null && propertyValues.length == 1 && propertyValues[0] != null && propertyValues[0].getClass() == Object[].class) {
 			propertyValues = (Object[])propertyValues[0];
 		}
 		

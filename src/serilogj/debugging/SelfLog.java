@@ -51,7 +51,7 @@ public class SelfLog {
 	public synchronized static void writeLine(String format, Object... parameters) {
 		PrintStream o = getOut();
 		if (o != null) {
-			o.printf(new Date() + format, parameters);
+			o.printf(new Date() + format + "%n", parameters);
 			o.flush();
 		}
 	}

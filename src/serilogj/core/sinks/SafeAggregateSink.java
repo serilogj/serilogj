@@ -34,7 +34,7 @@ public class SafeAggregateSink implements ILogEventSink {
 			try {
 				sink.emit(logEvent);
 			} catch (RuntimeException ex) {
-				SelfLog.writeLine("Caught exception %1 while emitting to sink %2.", ex, sink);
+				SelfLog.writeLine("Caught exception %s while emitting to sink %s.", ex.getMessage(), sink);
 			}
 		}
 	}

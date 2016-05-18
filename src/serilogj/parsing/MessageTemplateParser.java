@@ -287,6 +287,6 @@ public class MessageTemplateParser implements IMessageTemplateParser {
     }
 	
 	private static boolean isValidInFormat(char c) {
-		return c != '}' && (Character.isLetterOrDigit(c) || isPunctuation(c) ||  c == ' ');
+		return c != '}' && (Character.isLetterOrDigit(c) || isPunctuation(c) ||  c == ' ' || c == '-');
 	}
 }

@@ -1,7 +1,10 @@
 package serilogj.events;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
+
+import serilogj.debugging.SelfLog;
 
 public class ScalarValue extends LogEventPropertyValue {
 	private Object value;
@@ -28,11 +31,26 @@ public class ScalarValue extends LogEventPropertyValue {
 			output.write("\"");
 			output.write(str.replace("\"", "\\\""));
 			output.write("\"");
+		} else if (value instanceof Date && format != null && format != "") {
+			try
+			{
+				SimpleDateFormat formatter = locale == null ? new SimpleDateFormat(format) : new SimpleDateFormat(format, locale);
+				output.write(formatter.format(value));
+			}
+			catch(Exception e)
+			{
+				output.write(value.toString());
+				SelfLog.writeLine("Invalid date format \"%s\", exception %s", format, e.getMessage());
+			}
 		} else {
 			output.write(value.toString());
 		}
 
 		// TODO: Do something with format
+	}
+	
+	public Object getValue() {
+		return value;
 	}
 	
 	@Override

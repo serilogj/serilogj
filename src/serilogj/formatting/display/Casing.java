@@ -16,6 +16,10 @@ public final class Casing {
 	*/
 	public static String format(String value, String format)
 	{
+		if (format == null) {
+			return value;
+		}
+		
 		switch (format)
 		{
 			case "u":

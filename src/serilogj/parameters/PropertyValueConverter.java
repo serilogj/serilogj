@@ -1,32 +1,16 @@
 package serilogj.parameters;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import io.advantageous.boon.core.Conversions;
-import io.advantageous.boon.core.Typ;
-import io.advantageous.boon.core.reflection.Reflection;
-import io.advantageous.boon.core.reflection.fields.FieldAccess;
-import serilogj.core.DestructuringPolicyResult;
-import serilogj.core.IDestructuringPolicy;
-import serilogj.core.ILogEventPropertyFactory;
-import serilogj.core.ILogEventPropertyValueFactory;
-import serilogj.core.IScalarConversionPolicy;
-import serilogj.core.ScalarConversionPolicyResult;
-import serilogj.debugging.SelfLog;
-import serilogj.events.DictionaryValue;
-import serilogj.events.LogEventProperty;
-import serilogj.events.LogEventPropertyValue;
-import serilogj.events.ScalarValue;
-import serilogj.events.SequenceValue;
-import serilogj.events.StructureValue;
-import serilogj.parsing.Destructuring;
-import serilogj.policies.ByteArrayScalarConversionPolicy;
-import serilogj.policies.EnumScalarConversionPolicy;
-import serilogj.policies.SimpleScalarConversionPolicy;
+import java.net.*;
+import java.time.*;
+import java.util.*;
+import io.advantageous.boon.core.*;
+import io.advantageous.boon.core.reflection.*;
+import io.advantageous.boon.core.reflection.fields.*;
+import serilogj.core.*;
+import serilogj.debugging.*;
+import serilogj.events.*;
+import serilogj.parsing.*;
+import serilogj.policies.*;
 
 //Copyright 2013-2015 Serilog Contributors
 //
@@ -63,8 +47,12 @@ public class PropertyValueConverter implements ILogEventPropertyValueFactory, IL
 		BuiltInScalarTypes.add(Double.class); 
 		BuiltInScalarTypes.add(java.math.BigDecimal.class); 
 		BuiltInScalarTypes.add(String.class);
+		BuiltInScalarTypes.add(LocalDate.class);
+		BuiltInScalarTypes.add(LocalDateTime.class);
+		BuiltInScalarTypes.add(ZonedDateTime.class);
 		BuiltInScalarTypes.add(Date.class);
 		BuiltInScalarTypes.add(URI.class);
+		
 	}
 	
 	private ArrayList<IDestructuringPolicy> destructuringPolicies;
