@@ -13,8 +13,16 @@ public class RollingFileSinkConfigurator {
 		return rollingFile(pathFormat, DefaultOutputTemplate);
 	}
 	
+	public static ILogEventSink rollingFile(String pathFormat, int retainedFileCountLimit) {
+		return rollingFile(pathFormat, DefaultOutputTemplate, retainedFileCountLimit);
+	}
+	
 	public static ILogEventSink rollingFile(String pathFormat, String outputTemplate) {
 		return rollingFile(pathFormat, DefaultFileSizeLimitBytes, DefaultRetainedFileCountLimit, false, new MessageTemplateTextFormatter(outputTemplate, null));
+	}
+
+	public static ILogEventSink rollingFile(String pathFormat, String outputTemplate, int retainedFileCountLimit) {
+		return rollingFile(pathFormat, DefaultFileSizeLimitBytes, retainedFileCountLimit, false, new MessageTemplateTextFormatter(outputTemplate, null));
 	}
 	
 	public static ILogEventSink rollingFile(String pathFormat, Long fileSizeLimitBytes, Integer retainedFileCountLimit, boolean buffered, ITextFormatter formatter) {

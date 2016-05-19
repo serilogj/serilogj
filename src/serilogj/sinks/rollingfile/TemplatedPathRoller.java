@@ -36,7 +36,6 @@ public class TemplatedPathRoller {
     private final static DateTimeFormatter DateFormatter = DateTimeFormatter.ofPattern(DateFormat);
     private final static String DefaultSeparator = "-";
     
-    private String pathTemplate;
     private Pattern filenameMatcher;
     private String directorySearchPattern;
     private String logFileDirectory;
@@ -98,7 +97,6 @@ public class TemplatedPathRoller {
     	
     	directorySearchPattern = filenameTemplate.replace(DateSpecifier, "*");
     	logFileDirectory = directory;
-    	this.pathTemplate = Paths.get(directory, filenameTemplate).toString(); 
     }
     
     public String getLogFileDirectory() {

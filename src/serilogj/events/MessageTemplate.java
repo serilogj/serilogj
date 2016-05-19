@@ -86,4 +86,9 @@ public class MessageTemplate {
 			return "";
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return getText();
+	}
 }

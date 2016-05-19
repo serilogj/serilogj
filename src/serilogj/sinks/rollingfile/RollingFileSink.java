@@ -4,7 +4,6 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.time.*;
-import java.time.chrono.ChronoLocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import serilogj.core.ILogEventSink;
@@ -65,6 +64,19 @@ public class RollingFileSink implements ILogEventSink, Closeable {
 			openFile(date);
 		}
 	}
+	
+	private void sortFiles(ArrayList<RollingLogFile> files) {
+		files.sort(new Comparator<RollingLogFile>() {
+			@Override
+			public int compare(RollingLogFile o1, RollingLogFile o2) {
+				if (o1.getDate().isEqual(o2.getDate()))
+				{
+					return Integer.compare(o2.getSequenceNumber(), o1.getSequenceNumber());
+				}
+				return o2.getDate().compareTo(o1.getDate());
+			}
+		});
+	}
 
 	private void openFile(LocalDateTime now) {
 		LocalDate today = now.toLocalDate();
@@ -72,13 +84,11 @@ public class RollingFileSink implements ILogEventSink, Closeable {
 
 		File folder = new File(roller.getLogFileDirectory());
 		ArrayList<RollingLogFile> files = roller.getMatches(folder.list());
-		files.removeIf(f -> !f.getDate().equals(today));
-		
+
 		int sequenceNumber = 0;
 		if (files.size() > 0) {
-			for(RollingLogFile file : files) {
-				sequenceNumber = Math.max(sequenceNumber, file.getSequenceNumber());
-			}
+			sortFiles(files);
+			sequenceNumber = files.get(0).getSequenceNumber();
 		}
 		
 		int maxAttempts = 3;
@@ -94,6 +104,7 @@ public class RollingFileSink implements ILogEventSink, Closeable {
 			}
 			
 			applyRetentionPolicy(path);
+			break;
 		}
 	}
 	
@@ -118,23 +129,13 @@ public class RollingFileSink implements ILogEventSink, Closeable {
 		File folder = new File(roller.getLogFileDirectory());
 		ArrayList<RollingLogFile> files = roller.getMatches(folder.list());
 
-		// Add our current log file (if it already exists, then first remove it)
+		// Add our current log file (if it already exists, then first remove it, saves us checking if it's in the list)
 		String currentFilename = new File(currentFilePath).getName();
 		files.removeIf(f -> f.getFilename().compareToIgnoreCase(currentFilename) == 0);
 		files.addAll(roller.getMatches(new String[] { currentFilename }));
 		
 		// Sort it 
-		// TODO: Check sort direction
-		files.sort(new Comparator<RollingLogFile>() {
-			@Override
-			public int compare(RollingLogFile o1, RollingLogFile o2) {
-				if (o1.getDate().isEqual(o2.getDate()))
-				{
-					return o1.getSequenceNumber() - o2.getSequenceNumber();
-				}
-				return o1.getDate().compareTo(o2.getDate());
-			}
-		});
+		sortFiles(files);
 		
 		// Nothing to remove?
 		if (files.size() <= retainedFileCountLimit) {
@@ -143,7 +144,7 @@ public class RollingFileSink implements ILogEventSink, Closeable {
 		
 		// Remove first x files from "remove" list, since we want to keep those
 		for(int i = 0; i < retainedFileCountLimit; i++) {
-			files.remove(i);
+			files.remove(0);
 		}
 		
 		for(RollingLogFile file : files) {
