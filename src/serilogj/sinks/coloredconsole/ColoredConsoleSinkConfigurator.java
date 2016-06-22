@@ -18,7 +18,7 @@ public class ColoredConsoleSinkConfigurator {
 	public static ILogEventSink coloredConsole(Locale locale) {
 		return coloredConsole(DefaultConsoleOutputTemplate, locale);
 	}
-	
+
 	public static ILogEventSink coloredConsole(String outputTemplate, Locale locale) {
 		return new ColoredConsoleSink(outputTemplate, locale);
 	}

@@ -13,16 +13,15 @@ public class PropertyToken extends MessageTemplateToken {
 	private String format;
 	private Destructuring destructuring;
 	private Alignment alignment;
-	
-	public PropertyToken(String propertyName, String rawText, String format, Alignment alignment, Destructuring destructuring, int startIndex) {
+
+	public PropertyToken(String propertyName, String rawText, String format, Alignment alignment,
+			Destructuring destructuring, int startIndex) {
 		super(startIndex);
-		
-		if (propertyName == null)
-		{
+
+		if (propertyName == null) {
 			throw new IllegalArgumentException("propertyName");
 		}
-		if (rawText == null)
-		{
+		if (rawText == null) {
 			throw new IllegalArgumentException("rawText");
 		}
 
@@ -32,7 +31,7 @@ public class PropertyToken extends MessageTemplateToken {
 		this.destructuring = destructuring;
 		this.alignment = alignment;
 
-		try	{
+		try {
 			int position = Integer.parseInt(propertyName);
 			if (position >= 0) {
 				this.position = position;
@@ -41,7 +40,7 @@ public class PropertyToken extends MessageTemplateToken {
 			// Ignore
 		}
 	}
-	
+
 	public String getPropertyName() {
 		return propertyName;
 	}
@@ -49,59 +48,58 @@ public class PropertyToken extends MessageTemplateToken {
 	public Destructuring getDestructuring() {
 		return destructuring;
 	}
-	
+
 	public String getFormat() {
 		return format;
 	}
-	
+
 	public Alignment getAlignment() {
 		return alignment;
 	}
-	
+
 	public boolean getIsPositional() {
 		return position != null && position >= 0;
 	}
-	
+
 	public int getPosition() {
 		return position;
 	}
-	
+
 	@Override
 	public int getLength() {
 		return rawText.length();
 	}
 
 	@Override
-	public void render(Map<String, LogEventPropertyValue> properties, Writer output, Locale locale)
-			throws IOException {
-		if (properties == null) { 
+	public void render(Map<String, LogEventPropertyValue> properties, Writer output, Locale locale) throws IOException {
+		if (properties == null) {
 			throw new IllegalArgumentException("properties");
 		}
 
-		if (output == null) { 
+		if (output == null) {
 			throw new IllegalArgumentException("output");
 		}
-		
+
 		if (!properties.containsKey(propertyName)) {
 			output.write(rawText);
 			return;
 		}
-		
+
 		LogEventPropertyValue propertyValue = properties.get(propertyName);
 		if (alignment == null) {
 			propertyValue.render(output, format, locale);
 			return;
 		}
-		
-		StringWriter valueOutput = new StringWriter();				
+
+		StringWriter valueOutput = new StringWriter();
 		propertyValue.render(valueOutput, format, locale);
 		String value = valueOutput.toString();
-		
+
 		if (value.length() >= alignment.getWidth()) {
 			output.write(value);
 			return;
 		}
-		
+
 		Padding.apply(output, value, alignment);
 	}
 
@@ -109,14 +107,13 @@ public class PropertyToken extends MessageTemplateToken {
 	public String toString() {
 		return rawText;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		PropertyToken sv = (PropertyToken)((obj instanceof PropertyToken) ? obj : null);
-		return sv != null && 
-			   rawText.equals(sv.rawText);
+		PropertyToken sv = (PropertyToken) ((obj instanceof PropertyToken) ? obj : null);
+		return sv != null && rawText.equals(sv.rawText);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return propertyName.hashCode();

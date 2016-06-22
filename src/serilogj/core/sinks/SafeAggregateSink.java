@@ -5,36 +5,36 @@ import serilogj.events.*;
 import serilogj.core.*;
 import serilogj.debugging.SelfLog;
 
-//Copyright 2013-2015 Serilog Contributors
+// Copyright 2013-2015 Serilog Contributors
 //
-//Licensed under the Apache License, Version 2.0 (the "License");
-//you may not use this file except in compliance with the License.
-//You may obtain a copy of the License at
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+// http://www.apache.org/licenses/LICENSE-2.0
 //
-//Unless required by applicable law or agreed to in writing, software
-//distributed under the License is distributed on an "AS IS" BASIS,
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//See the License for the specific language governing permissions and
-//limitations under the License.
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 public class SafeAggregateSink implements ILogEventSink {
-	private ArrayList<ILogEventSink> sinks;	
-	
+	private ArrayList<ILogEventSink> sinks;
+
 	public SafeAggregateSink(ILogEventSink[] sinks) {
-		if (sinks == null) 	{
+		if (sinks == null) {
 			throw new IllegalArgumentException("sinks");
 		}
 
 		this.sinks = new ArrayList<ILogEventSink>();
-		for(ILogEventSink sink : sinks) {
+		for (ILogEventSink sink : sinks) {
 			this.sinks.add(sink);
 		}
 	}
-	
+
 	public SafeAggregateSink(ArrayList<ILogEventSink> sinks) {
-		if (sinks == null) 	{
+		if (sinks == null) {
 			throw new IllegalArgumentException("sinks");
 		}
 		this.sinks = sinks;

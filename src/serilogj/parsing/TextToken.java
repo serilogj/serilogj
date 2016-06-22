@@ -7,21 +7,21 @@ import serilogj.events.LogEventPropertyValue;
 
 public class TextToken extends MessageTemplateToken {
 	private String text;
-	
+
 	public TextToken(String text) {
 		this(text, -1);
 	}
-	
+
 	public TextToken(String text, int startIndex) {
 		super(startIndex);
 
 		if (text == null) {
 			throw new IllegalArgumentException("text");
 		}
-		
+
 		this.text = text;
 	}
-	
+
 	// TODO: Add compare-methods?
 
 	@Override
@@ -41,13 +41,13 @@ public class TextToken extends MessageTemplateToken {
 		}
 		output.write(text);
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
-		TextToken sv = (TextToken)((obj instanceof TextToken) ? obj : null);
+		TextToken sv = (TextToken) ((obj instanceof TextToken) ? obj : null);
 		return sv != null && text.equals(sv.text);
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return text.hashCode();
