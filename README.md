@@ -28,6 +28,9 @@ After this you can log using the following example code:
 		Log.fatal("Hello {world} {@user}", "wereld", user);
 ```
 
+## Requires
+This source requires io.advantageous.boon package for reflection.
+
 ## known issues
 
 * Formatting is only partially supported (Only for date's)
