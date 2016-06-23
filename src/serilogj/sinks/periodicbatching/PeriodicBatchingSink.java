@@ -86,6 +86,7 @@ public abstract class PeriodicBatchingSink implements ILogEventSink, Closeable {
 					queue.add(logEvent);
 					started = true;
 					setTimer(Duration.ZERO);
+					return;
 				}
 			}
 		}

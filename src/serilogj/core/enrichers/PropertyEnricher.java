@@ -44,7 +44,7 @@ public class PropertyEnricher implements ILogEventEnricher {
 	 * @exception ArgumentNullException
 	 */
 	public PropertyEnricher(String name, Object value, boolean destructureObjects) {
-		if (LogEventProperty.isValidName(name)) {
+		if (!LogEventProperty.isValidName(name)) {
 			throw new IllegalArgumentException("name");
 		}
 
@@ -72,4 +72,11 @@ public class PropertyEnricher implements ILogEventEnricher {
 		logEvent.addPropertyIfAbsent(property);
 	}
 
+	public String getName() {
+		return name;
+	}
+	
+	public Object getValue() {
+		return value;
+	}
 }
