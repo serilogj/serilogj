@@ -1,5 +1,7 @@
 package serilogj.policies;
 
+import java.util.HashMap;
+import java.util.Map;
 import serilogj.core.ILogEventPropertyValueFactory;
 import serilogj.core.IScalarConversionPolicy;
 import serilogj.core.ScalarConversionPolicyResult;
@@ -20,14 +22,34 @@ import serilogj.events.ScalarValue;
 // limitations under the License.
 
 public class EnumScalarConversionPolicy implements IScalarConversionPolicy {
-	@Override
-	public ScalarConversionPolicyResult tryConvertToScalar(Object value,
-			ILogEventPropertyValueFactory propertyValueFactory) {
-		ScalarConversionPolicyResult result = new ScalarConversionPolicyResult();
-		if (value.getClass().isEnum()) {
-			result.isValid = true;
-			result.result = new ScalarValue(value);
-		}
-		return result;
-	}
+    private Map<Class<?>, Map<Integer, ScalarValue>> _values = new HashMap<Class<?>, Map<Integer, ScalarValue>>();
+
+    @Override
+    public ScalarConversionPolicyResult tryConvertToScalar(Object value, ILogEventPropertyValueFactory propertyValueFactory) {
+        ScalarConversionPolicyResult result = new ScalarConversionPolicyResult();
+        if (!value.getClass().isEnum()) {
+            return result;
+        }
+
+        result.isValid = true;
+        synchronized (_values) {
+            Map<Integer, ScalarValue> enumValues = _values.get(value.getClass());
+            if (enumValues == null) {
+                enumValues = new HashMap<Integer, ScalarValue>();
+                _values.put(value.getClass(), enumValues);
+            }
+
+            @SuppressWarnings("rawtypes")
+            Integer enumOrdinal = ((Enum) value).ordinal();
+
+            ScalarValue resultValue = enumValues.get(enumOrdinal);
+            if (resultValue == null) {
+                resultValue = new ScalarValue(value);
+                enumValues.put(enumOrdinal, resultValue);
+            }
+
+            result.result = resultValue;
+        }
+        return result;
+    }
 }

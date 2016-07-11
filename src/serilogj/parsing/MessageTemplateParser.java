@@ -27,7 +27,7 @@ public class MessageTemplateParser implements IMessageTemplateParser {
 	private ArrayList<MessageTemplateToken> tokenize(String messageTemplate) {
 		ArrayList<MessageTemplateToken> tokens = new ArrayList<MessageTemplateToken>();
 
-		if (messageTemplate == "") {
+		if (messageTemplate.equals("")) {
 			tokens.add(new TextToken(""));
 			return tokens;
 		}
