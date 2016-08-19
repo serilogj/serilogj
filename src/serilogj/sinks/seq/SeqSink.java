@@ -36,12 +36,12 @@ public class SeqSink extends PeriodicBatchingSink {
 	private final Long eventBodyLimitBytes;
 	private LoggingLevelSwitch levelSwitch;
 	private LocalDateTime nextRequiredLevelCheck = LocalDateTime.now().plus(RequiredLevelCheckInterval);
-    private final Map<String, String> httpHeaders;
+	private final Map<String, String> httpHeaders;
 
-    public SeqSink(String serverUrl, String apiKey, Integer batchSizeLimit, Duration period, Long eventBodyLimitBytes,
-                   LoggingLevelSwitch levelSwitch) {
-        this(serverUrl, apiKey, null, batchSizeLimit, period, eventBodyLimitBytes, levelSwitch);
-    }
+	public SeqSink(String serverUrl, String apiKey, Integer batchSizeLimit, Duration period, Long eventBodyLimitBytes,
+				LoggingLevelSwitch levelSwitch) {
+		this(serverUrl, apiKey, null, batchSizeLimit, period, eventBodyLimitBytes, levelSwitch);
+	}
 
 	public SeqSink(String serverUrl, String apiKey, Map<String,String> customHttpHeaders, Integer batchSizeLimit, Duration period, Long eventBodyLimitBytes,
 			LoggingLevelSwitch levelSwitch) {
@@ -65,15 +65,15 @@ public class SeqSink extends PeriodicBatchingSink {
 			throw new IllegalArgumentException("serverUrl");
 		}
 
-        Map<String, String> httpHeaders = new HashMap<>();
+		Map<String, String> httpHeaders = new HashMap<>();
 		httpHeaders.put("Content-Type", "application/json; charset=utf-8");
-        if(customHttpHeaders != null) {
-            httpHeaders.putAll(customHttpHeaders);
-        }
-        if (apiKey != null && !apiKey.equals("")) {
-            httpHeaders.put(ApiKeyHeaderName, apiKey);
-        }
-        this.httpHeaders = Collections.unmodifiableMap(httpHeaders);
+		if(customHttpHeaders != null) {
+			httpHeaders.putAll(customHttpHeaders);
+		}
+		if (apiKey != null && !apiKey.equals("")) {
+			httpHeaders.put(ApiKeyHeaderName, apiKey);
+		}
+		this.httpHeaders = Collections.unmodifiableMap(httpHeaders);
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class SeqSink extends PeriodicBatchingSink {
 		try {
 			HttpURLConnection con = (HttpURLConnection) baseUrl.openConnection();
 			con.setRequestMethod("POST");
-            httpHeaders.forEach(con::setRequestProperty);
+			httpHeaders.forEach(con::setRequestProperty);
 			con.setDoOutput(true);
 
 			OutputStream os = con.getOutputStream();
