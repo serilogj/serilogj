@@ -13,6 +13,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Collections;
 
 import serilogj.core.LoggingLevelSwitch;
 import serilogj.debugging.SelfLog;
@@ -29,14 +32,18 @@ public class SeqSink extends PeriodicBatchingSink {
 	private static final String BulkUploadResource = "api/events/raw";
 	private static final String ApiKeyHeaderName = "X-Seq-ApiKey";
 
-	private URL baseUrl;
-	private String serverUrl;
-	private String apiKey;
-	private Long eventBodyLimitBytes;
+	private final URL baseUrl;
+	private final Long eventBodyLimitBytes;
 	private LoggingLevelSwitch levelSwitch;
 	private LocalDateTime nextRequiredLevelCheck = LocalDateTime.now().plus(RequiredLevelCheckInterval);
+    private final Map<String, String> httpHeaders;
 
-	public SeqSink(String serverUrl, String apiKey, Integer batchSizeLimit, Duration period, Long eventBodyLimitBytes,
+    public SeqSink(String serverUrl, String apiKey, Integer batchSizeLimit, Duration period, Long eventBodyLimitBytes,
+                   LoggingLevelSwitch levelSwitch) {
+        this(serverUrl, apiKey, null, batchSizeLimit, period, eventBodyLimitBytes, levelSwitch);
+    }
+
+	public SeqSink(String serverUrl, String apiKey, Map<String,String> customHttpHeaders, Integer batchSizeLimit, Duration period, Long eventBodyLimitBytes,
 			LoggingLevelSwitch levelSwitch) {
 		super(batchSizeLimit == null ? DefaultBatchPostingLimit : batchSizeLimit,
 				period == null ? DefaultPeriod : period);
@@ -45,20 +52,28 @@ public class SeqSink extends PeriodicBatchingSink {
 			throw new IllegalArgumentException("serverUrl");
 		}
 
-		this.serverUrl = serverUrl;
-		if (!this.serverUrl.endsWith("/")) {
-			this.serverUrl += "/";
+		if (!serverUrl.endsWith("/")) {
+			serverUrl += "/";
 		}
-		this.apiKey = apiKey;
 		this.eventBodyLimitBytes = eventBodyLimitBytes;
 		this.levelSwitch = levelSwitch;
 
 		try {
-			baseUrl = new URL(this.serverUrl + BulkUploadResource);
+			baseUrl = new URL(serverUrl + BulkUploadResource);
 		} catch (MalformedURLException e) {
-			SelfLog.writeLine("Invalid server url format: %s", this.serverUrl + BulkUploadResource);
+			SelfLog.writeLine("Invalid server url format: %s", serverUrl + BulkUploadResource);
 			throw new IllegalArgumentException("serverUrl");
 		}
+
+        Map<String, String> httpHeaders = new HashMap<>();
+		httpHeaders.put("Content-Type", "application/json; charset=utf-8");
+        if(customHttpHeaders != null) {
+            httpHeaders.putAll(customHttpHeaders);
+        }
+        if (apiKey != null && !apiKey.equals("")) {
+            httpHeaders.put(ApiKeyHeaderName, apiKey);
+        }
+        this.httpHeaders = Collections.unmodifiableMap(httpHeaders);
 	}
 
 	@Override
@@ -101,10 +116,7 @@ public class SeqSink extends PeriodicBatchingSink {
 		try {
 			HttpURLConnection con = (HttpURLConnection) baseUrl.openConnection();
 			con.setRequestMethod("POST");
-			if (apiKey != null && !apiKey.equals("")) {
-				con.setRequestProperty(ApiKeyHeaderName, apiKey);
-			}
-			con.setRequestProperty("Content-Type", "application/json; charset=utf-8");
+            httpHeaders.forEach(con::setRequestProperty);
 			con.setDoOutput(true);
 
 			OutputStream os = con.getOutputStream();
