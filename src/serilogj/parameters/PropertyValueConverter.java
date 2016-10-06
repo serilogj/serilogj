@@ -1,5 +1,6 @@
 package serilogj.parameters;
 
+import java.lang.reflect.Modifier;
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
