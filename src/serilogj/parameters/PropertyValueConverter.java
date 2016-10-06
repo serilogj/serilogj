@@ -212,8 +212,15 @@ public class PropertyValueConverter implements ILogEventPropertyValueFactory, IL
 		}
 
 		for (Map.Entry<String, FieldAccess> pair : fields.entrySet()) {
-			if (pair.getValue().isStatic()) {
+			if (pair.getValue().isStatic() || pair.getValue().isWriteOnly()) {
 				continue;
+			}
+
+			if (pair.getValue().getField() != null) {
+				int mod = pair.getValue().getField().getModifiers();
+				if (Modifier.isPrivate(mod) || Modifier.isProtected(mod)) {
+					continue;
+				}
 			}
 
 			try {
