@@ -97,7 +97,7 @@ public interface ILogger {
 	 * @param propertyValues
 	 *            Objects positionally formatted into the message template.
 	 */
-	void write(LogEventLevel level, Exception exception, String messageTemplate, Object... propertyValues);
+	void write(LogEventLevel level, Throwable exception, String messageTemplate, Object... propertyValues);
 
 	/**
 	 * Determine if events at the specified level will be passed through to the
@@ -117,8 +117,8 @@ public interface ILogger {
 	 *            Message template describing the event.
 	 * @param propertyValues
 	 *            Objects positionally formatted into the message template.
-	 *            <example> Log.Verbose(
-	 *            "Staring into space, wondering if we're alone."); </example>
+	 *            <example> Log.Verbose("Staring into space, wondering if we're
+	 *            alone."); </example>
 	 */
 	void verbose(String messageTemplate, Object... propertyValues);
 
@@ -132,11 +132,10 @@ public interface ILogger {
 	 *            Message template describing the event.
 	 * @param propertyValues
 	 *            Objects positionally formatted into the message template.
-	 *            <example> Log.Verbose(ex,
-	 *            "Staring into space, wondering where this comet came from."
-	 *            ); </example>
+	 *            <example> Log.Verbose(ex, "Staring into space, wondering where
+	 *            this comet came from."); </example>
 	 */
-	void verbose(Exception exception, String messageTemplate, Object... propertyValues);
+	void verbose(Throwable exception, String messageTemplate, Object... propertyValues);
 
 	/**
 	 * Write a log event with the <see cref="LogEventLevel.Debug"/> level and
@@ -161,10 +160,10 @@ public interface ILogger {
 	 *            Message template describing the event.
 	 * @param propertyValues
 	 *            Objects positionally formatted into the message template.
-	 *            <example> Log.Debug(ex, "Swallowing a mundane exception."
-	 *            ); </example>
+	 *            <example> Log.Debug(ex, "Swallowing a mundane exception.");
+	 *            </example>
 	 */
-	void debug(Exception exception, String messageTemplate, Object... propertyValues);
+	void debug(Throwable exception, String messageTemplate, Object... propertyValues);
 
 	/**
 	 * Write a log event with the <see cref="LogEventLevel.Information"/> level
@@ -174,9 +173,9 @@ public interface ILogger {
 	 *            Message template describing the event.
 	 * @param propertyValues
 	 *            Objects positionally formatted into the message template.
-	 *            <example> Log.Information(
-	 *            "Processed {RecordCount} records in {TimeMS}.",
-	 *            records.Length, sw.ElapsedMilliseconds); </example>
+	 *            <example> Log.Information("Processed {RecordCount} records in
+	 *            {TimeMS}.", records.Length, sw.ElapsedMilliseconds);
+	 *            </example>
 	 */
 	void information(String messageTemplate, Object... propertyValues);
 
@@ -190,11 +189,11 @@ public interface ILogger {
 	 *            Message template describing the event.
 	 * @param propertyValues
 	 *            Objects positionally formatted into the message template.
-	 *            <example> Log.Information(ex,
-	 *            "Processed {RecordCount} records in {TimeMS}.",
-	 *            records.Length, sw.ElapsedMilliseconds); </example>
+	 *            <example> Log.Information(ex, "Processed {RecordCount} records
+	 *            in {TimeMS}.", records.Length, sw.ElapsedMilliseconds);
+	 *            </example>
 	 */
-	void information(Exception exception, String messageTemplate, Object... propertyValues);
+	void information(Throwable exception, String messageTemplate, Object... propertyValues);
 
 	/**
 	 * Write a log event with the <see cref="LogEventLevel.Warning"/> level and
@@ -222,7 +221,7 @@ public interface ILogger {
 	 *            <example> Log.Warning(ex, "Skipped {SkipCount} records.",
 	 *            skippedRecords.Length); </example>
 	 */
-	void warning(Exception exception, String messageTemplate, Object... propertyValues);
+	void warning(Throwable exception, String messageTemplate, Object... propertyValues);
 
 	/**
 	 * Write a log event with the <see cref="LogEventLevel.Error"/> level and
@@ -250,7 +249,7 @@ public interface ILogger {
 	 *            <example> Log.Error(ex, "Failed {ErrorCount} records.",
 	 *            brokenRecords.Length); </example>
 	 */
-	void error(Exception exception, String messageTemplate, Object... propertyValues);
+	void error(Throwable exception, String messageTemplate, Object... propertyValues);
 
 	/**
 	 * Write a log event with the <see cref="LogEventLevel.Fatal"/> level and
@@ -276,5 +275,5 @@ public interface ILogger {
 	 *            Objects positionally formatted into the message template.
 	 *            <example> Log.Fatal(ex, "Process terminating."); </example>
 	 */
-	void fatal(Exception exception, String messageTemplate, Object... propertyValues);
+	void fatal(Throwable exception, String messageTemplate, Object... propertyValues);
 }

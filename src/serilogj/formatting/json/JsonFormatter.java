@@ -122,7 +122,7 @@ public class JsonFormatter implements ITextFormatter {
 			writeJsonProperty("Message", message, output, true);
 		}
 
-		Exception ex = logEvent.getException();
+		Throwable ex = logEvent.getException();
 		if (ex != null) {
 			StringWriter sw = new StringWriter();
 			PrintWriter pw = new PrintWriter(sw);

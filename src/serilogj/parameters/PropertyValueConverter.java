@@ -53,7 +53,7 @@ import serilogj.policies.SimpleScalarConversionPolicy;
 // mind working correctly with any other. This technique also makes the programmer
 // writing a log event (roughly) in control of the cost of recording that event.
 public class PropertyValueConverter implements ILogEventPropertyValueFactory, ILogEventPropertyFactory {
-    private static final ScalarValue NullScalarValue = new ScalarValue(null);
+	private static final ScalarValue NullScalarValue = new ScalarValue(null);
 	private static final HashSet<java.lang.Class<?>> BuiltInScalarTypes = new HashSet<java.lang.Class<?>>();
 	static {
 		BuiltInScalarTypes.add(Boolean.class);
@@ -101,7 +101,7 @@ public class PropertyValueConverter implements ILogEventPropertyValueFactory, IL
 		this.scalarConversionPolicies.add(new SimpleScalarConversionPolicy(scalarTypes));
 		this.scalarConversionPolicies.add(new EnumScalarConversionPolicy());
 		this.scalarConversionPolicies.add(new ByteArrayScalarConversionPolicy());
-        this.scalarConversionPolicies.add(new BooleanScalarConversionPolicy());
+		this.scalarConversionPolicies.add(new BooleanScalarConversionPolicy());
 		// Nullable converter not build (Java doesn't have nullable types)
 
 		this.destructuringPolicies = new ArrayList<IDestructuringPolicy>();
@@ -140,7 +140,7 @@ public class PropertyValueConverter implements ILogEventPropertyValueFactory, IL
 
 	private LogEventPropertyValue createPropertyValue(Object value, Destructuring destructuring, int depth) {
 		if (value == null) {
-            return NullScalarValue;
+			return NullScalarValue;
 		}
 
 		if (destructuring == Destructuring.Stringify) {
@@ -203,7 +203,7 @@ public class PropertyValueConverter implements ILogEventPropertyValueFactory, IL
 		if (value == null) {
 			return result;
 		}
-		Class<?> valueType = valueType = value.getClass();
+		Class<?> valueType = value.getClass();
 		Map<String, FieldAccess> fields = null;
 		try {
 			fields = Reflection.getPropertyFieldAccessMapFieldFirstForSerializer(valueType);

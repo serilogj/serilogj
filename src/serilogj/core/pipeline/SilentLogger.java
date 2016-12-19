@@ -50,7 +50,7 @@ public class SilentLogger implements ILogger {
 	}
 
 	@Override
-	public void write(LogEventLevel level, Exception exception, String messageTemplate, Object... propertyValues) {
+	public void write(LogEventLevel level, Throwable exception, String messageTemplate, Object... propertyValues) {
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class SilentLogger implements ILogger {
 	}
 
 	@Override
-	public void verbose(Exception exception, String messageTemplate, Object... propertyValues) {
+	public void verbose(Throwable exception, String messageTemplate, Object... propertyValues) {
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class SilentLogger implements ILogger {
 	}
 
 	@Override
-	public void debug(Exception exception, String messageTemplate, Object... propertyValues) {
+	public void debug(Throwable exception, String messageTemplate, Object... propertyValues) {
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class SilentLogger implements ILogger {
 	}
 
 	@Override
-	public void information(Exception exception, String messageTemplate, Object... propertyValues) {
+	public void information(Throwable exception, String messageTemplate, Object... propertyValues) {
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class SilentLogger implements ILogger {
 	}
 
 	@Override
-	public void warning(Exception exception, String messageTemplate, Object... propertyValues) {
+	public void warning(Throwable exception, String messageTemplate, Object... propertyValues) {
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class SilentLogger implements ILogger {
 	}
 
 	@Override
-	public void error(Exception exception, String messageTemplate, Object... propertyValues) {
+	public void error(Throwable exception, String messageTemplate, Object... propertyValues) {
 	}
 
 	@Override
@@ -103,6 +103,6 @@ public class SilentLogger implements ILogger {
 	}
 
 	@Override
-	public void fatal(Exception exception, String messageTemplate, Object... propertyValues) {
+	public void fatal(Throwable exception, String messageTemplate, Object... propertyValues) {
 	}
 }

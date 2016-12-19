@@ -12,10 +12,10 @@ public class LogEvent {
 	private Map<String, LogEventPropertyValue> properties;
 	private Date timestamp;
 	private LogEventLevel level;
-	private Exception exception;
+	private Throwable exception;
 	private MessageTemplate messageTemplate;
 
-	public LogEvent(Date timestamp, LogEventLevel level, Exception exception, MessageTemplate messageTemplate,
+	public LogEvent(Date timestamp, LogEventLevel level, Throwable exception, MessageTemplate messageTemplate,
 			ArrayList<LogEventProperty> properties) {
 		if (messageTemplate == null) {
 			throw new IllegalArgumentException("messageTemplate");
@@ -46,7 +46,7 @@ public class LogEvent {
 		return level;
 	}
 
-	public Exception getException() {
+	public Throwable getException() {
 		return exception;
 	}
 

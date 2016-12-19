@@ -29,8 +29,8 @@ import serilogj.events.LogEventLevel;
  * <example> Log.Logger = new LoggerConfiguration() .WithConsoleSink()
  * .CreateLogger();
  * 
- * var thing = "World"; Log.Logger.Information("Hello, {Thing}!",
- * thing); </example>
+ * var thing = "World"; Log.Logger.Information("Hello, {Thing}!", thing);
+ * </example>
  * 
  * The methods on <see cref="Log"/> (and its dynamic sibling
  * <see cref="ILogger"/>) are guaranteed never to throw exceptions. Methods on
@@ -145,7 +145,7 @@ public class Log {
 	 * @param propertyValues
 	 *            Objects positionally formatted into the message template.
 	 */
-	public static void write(LogEventLevel level, Exception exception, String messageTemplate,
+	public static void write(LogEventLevel level, Throwable exception, String messageTemplate,
 			Object... propertyValues) {
 		getLogger().write(level, exception, messageTemplate, propertyValues);
 	}
@@ -169,8 +169,8 @@ public class Log {
 	 *            Message template describing the event.
 	 * @param propertyValues
 	 *            Objects positionally formatted into the message template.
-	 *            <example> Log.Verbose(
-	 *            "Staring into space, wondering if we're alone."); </example>
+	 *            <example> Log.Verbose("Staring into space, wondering if we're
+	 *            alone."); </example>
 	 */
 	public static void verbose(String messageTemplate, Object... propertyValues) {
 		getLogger().verbose(messageTemplate, propertyValues);
@@ -186,11 +186,10 @@ public class Log {
 	 *            Message template describing the event.
 	 * @param propertyValues
 	 *            Objects positionally formatted into the message template.
-	 *            <example> Log.Verbose(ex,
-	 *            "Staring into space, wondering where this comet came from."
-	 *            ); </example>
+	 *            <example> Log.Verbose(ex, "Staring into space, wondering where
+	 *            this comet came from."); </example>
 	 */
-	public static void verbose(Exception exception, String messageTemplate, Object... propertyValues) {
+	public static void verbose(Throwable exception, String messageTemplate, Object... propertyValues) {
 		getLogger().verbose(exception, messageTemplate, propertyValues);
 	}
 
@@ -218,10 +217,10 @@ public class Log {
 	 *            Message template describing the event.
 	 * @param propertyValues
 	 *            Objects positionally formatted into the message template.
-	 *            <example> Log.Debug(ex, "Swallowing a mundane exception."
-	 *            ); </example>
+	 *            <example> Log.Debug(ex, "Swallowing a mundane exception.");
+	 *            </example>
 	 */
-	public static void debug(Exception exception, String messageTemplate, Object... propertyValues) {
+	public static void debug(Throwable exception, String messageTemplate, Object... propertyValues) {
 		getLogger().debug(exception, messageTemplate, propertyValues);
 	}
 
@@ -232,9 +231,9 @@ public class Log {
 	 *            Message template describing the event.
 	 * @param propertyValues
 	 *            Objects positionally formatted into the message template.
-	 *            <example> Log.Information(
-	 *            "Processed {RecordCount} records in {TimeMS}.",
-	 *            records.Length, sw.ElapsedMilliseconds); </example>
+	 *            <example> Log.Information("Processed {RecordCount} records in
+	 *            {TimeMS}.", records.Length, sw.ElapsedMilliseconds);
+	 *            </example>
 	 */
 	public static void information(String messageTemplate, Object... propertyValues) {
 		getLogger().information(messageTemplate, propertyValues);
@@ -250,11 +249,11 @@ public class Log {
 	 *            Message template describing the event.
 	 * @param propertyValues
 	 *            Objects positionally formatted into the message template.
-	 *            <example> Log.Information(ex,
-	 *            "Processed {RecordCount} records in {TimeMS}.",
-	 *            records.Length, sw.ElapsedMilliseconds); </example>
+	 *            <example> Log.Information(ex, "Processed {RecordCount} records
+	 *            in {TimeMS}.", records.Length, sw.ElapsedMilliseconds);
+	 *            </example>
 	 */
-	public static void information(Exception exception, String messageTemplate, Object... propertyValues) {
+	public static void information(Throwable exception, String messageTemplate, Object... propertyValues) {
 		getLogger().information(exception, messageTemplate, propertyValues);
 	}
 
@@ -285,7 +284,7 @@ public class Log {
 	 *            <example> Log.Warning(ex, "Skipped {SkipCount} records.",
 	 *            skippedRecords.Length); </example>
 	 */
-	public static void warning(Exception exception, String messageTemplate, Object... propertyValues) {
+	public static void warning(Throwable exception, String messageTemplate, Object... propertyValues) {
 		getLogger().warning(exception, messageTemplate, propertyValues);
 	}
 
@@ -316,7 +315,7 @@ public class Log {
 	 *            <example> Log.Error(ex, "Failed {ErrorCount} records.",
 	 *            brokenRecords.Length); </example>
 	 */
-	public static void error(Exception exception, String messageTemplate, Object... propertyValues) {
+	public static void error(Throwable exception, String messageTemplate, Object... propertyValues) {
 		getLogger().error(exception, messageTemplate, propertyValues);
 	}
 
@@ -345,7 +344,7 @@ public class Log {
 	 *            Objects positionally formatted into the message template.
 	 *            <example> Log.Fatal(ex, "Process terminating."); </example>
 	 */
-	public static void fatal(Exception exception, String messageTemplate, Object... propertyValues) {
+	public static void fatal(Throwable exception, String messageTemplate, Object... propertyValues) {
 		getLogger().fatal(exception, messageTemplate, propertyValues);
 	}
 }

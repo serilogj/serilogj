@@ -132,7 +132,7 @@ public class Logger implements ILogger, ILogEventSink {
 	}
 
 	@Override
-	public void write(LogEventLevel level, Exception exception, String messageTemplate, Object... propertyValues) {
+	public void write(LogEventLevel level, Throwable exception, String messageTemplate, Object... propertyValues) {
 		if (messageTemplate == null) {
 			return;
 		}
@@ -164,7 +164,7 @@ public class Logger implements ILogger, ILogEventSink {
 	}
 
 	@Override
-	public void verbose(Exception exception, String messageTemplate, Object... propertyValues) {
+	public void verbose(Throwable exception, String messageTemplate, Object... propertyValues) {
 		write(LogEventLevel.Verbose, exception, messageTemplate, propertyValues);
 	}
 
@@ -174,7 +174,7 @@ public class Logger implements ILogger, ILogEventSink {
 	}
 
 	@Override
-	public void debug(Exception exception, String messageTemplate, Object... propertyValues) {
+	public void debug(Throwable exception, String messageTemplate, Object... propertyValues) {
 		write(LogEventLevel.Debug, exception, messageTemplate, propertyValues);
 	}
 
@@ -184,7 +184,7 @@ public class Logger implements ILogger, ILogEventSink {
 	}
 
 	@Override
-	public void information(Exception exception, String messageTemplate, Object... propertyValues) {
+	public void information(Throwable exception, String messageTemplate, Object... propertyValues) {
 		write(LogEventLevel.Information, exception, messageTemplate, propertyValues);
 	}
 
@@ -194,7 +194,7 @@ public class Logger implements ILogger, ILogEventSink {
 	}
 
 	@Override
-	public void warning(Exception exception, String messageTemplate, Object... propertyValues) {
+	public void warning(Throwable exception, String messageTemplate, Object... propertyValues) {
 		write(LogEventLevel.Warning, exception, messageTemplate, propertyValues);
 	}
 
@@ -204,7 +204,7 @@ public class Logger implements ILogger, ILogEventSink {
 	}
 
 	@Override
-	public void error(Exception exception, String messageTemplate, Object... propertyValues) {
+	public void error(Throwable exception, String messageTemplate, Object... propertyValues) {
 		write(LogEventLevel.Error, exception, messageTemplate, propertyValues);
 	}
 
@@ -214,7 +214,7 @@ public class Logger implements ILogger, ILogEventSink {
 	}
 
 	@Override
-	public void fatal(Exception exception, String messageTemplate, Object... propertyValues) {
+	public void fatal(Throwable exception, String messageTemplate, Object... propertyValues) {
 		write(LogEventLevel.Fatal, exception, messageTemplate, propertyValues);
 	}
 }

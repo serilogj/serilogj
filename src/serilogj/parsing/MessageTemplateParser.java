@@ -1,6 +1,6 @@
 package serilogj.parsing;
 
-import java.util.*;
+import java.util.ArrayList;
 
 import serilogj.core.IMessageTemplateParser;
 import serilogj.events.MessageTemplate;
