@@ -111,6 +111,7 @@ public abstract class PeriodicBatchingSink implements ILogEventSink, Closeable {
 			}
 		};
 
+		timer.purge();
 		timer.schedule(task, delay.getSeconds() * 1000);
 	}
 
@@ -168,6 +169,8 @@ public abstract class PeriodicBatchingSink implements ILogEventSink, Closeable {
 
 		if (task != null) {
 			task.cancel();
+			timer.purge();
+			
 			execute();
 		}
 	}
