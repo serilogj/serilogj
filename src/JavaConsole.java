@@ -17,30 +17,37 @@ public class JavaConsole {
 	public static void main(String[] args) {
 		SelfLog.setOut(System.out);
 
-		Log.setLogger(new LoggerConfiguration().writeTo(coloredConsole("{blaat} {Message} {NewLine}"))
-				.writeTo(rollingFile("test-{Date}.log"), LogEventLevel.Verbose)
-				.writeTo(seq("http://localhost:5341/")).setMinimumLevel(LogEventLevel.Verbose)
-				.with(new LogContextEnricher()).with(new UserDestructor()).createLogger());
+		Log.setLogger(new LoggerConfiguration()
+				.setMinimumLevel(LogEventLevel.Verbose)
+				.with(new LogContextEnricher())
+				.with(new UserDestructor())
+				.writeTo(coloredConsole("[{Timestamp} {Level}] {Message} ({Operation}){NewLine}{Exception}"))
+				.writeTo(rollingFile("test-{Date}.log"))
+				.writeTo(seq("http://localhost:5341/"))
+				.createLogger());
 
-		try (AutoCloseable property = LogContext.pushProperty("blaat", "1")) {
-			Log.information("test");
-			try (AutoCloseable other = LogContext.pushProperty("blaat", "2")) {
-				Log.information("test");
+		try {
+			try (AutoCloseable property = LogContext.pushProperty("Operation", 1)) {
+				Log.information("In outer operation");
+				try (AutoCloseable other = LogContext.pushProperty("Operation", 2)) {
+					Log.information("In inner operation");
+				}
 			}
-			System.in.read();
-		} catch (Exception e) {
-			e.printStackTrace();
+
+			for (int i = 0; i < 10; ++i) {
+				Log.debug("Running iteration {Number}", i);
+				Thread.sleep(2000);
+			}
+
+			User user = new User();
+			user.setUserName(System.getProperty("user.name"));
+			Log.forContext(JavaConsole.class).warning("Hello {name} from {@user}", "World", user);
+
+			throw new Exception("Something went wrong");
+		} catch (Exception ex) {
+			Log.error(ex, "An error occurred");
 		}
 
-		/*
-		 * Log.verbose("Hello {world} {@user}", "wereld", user); Log.debug(
-		 * "Hello {world} {@user}", "wereld", user); Log.information(
-		 * "Hello {world} {@user}", "wereld", user); Log.warning(
-		 * "Hello {world} {@user}", "wereld", user); Log.error(
-		 * "Hello {world} {@user}", "wereld", user); Log.fatal(
-		 * "Hello {world} {@user}", "wereld", user);
-		 */
-
-		//Log.forContext(JavaConsole.class).forContext(User.class).information("blaat");
+		Log.closeAndFlush();
 	}
 }

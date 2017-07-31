@@ -1,5 +1,7 @@
 package serilogj.core.sinks;
 
+import java.io.Closeable;
+import java.io.IOException;
 import java.util.*;
 import serilogj.events.*;
 import serilogj.core.*;
@@ -19,7 +21,7 @@ import serilogj.debugging.SelfLog;
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public class SafeAggregateSink implements ILogEventSink {
+public class SafeAggregateSink implements ILogEventSink, Closeable {
 	private ArrayList<ILogEventSink> sinks;
 
 	public SafeAggregateSink(ILogEventSink[] sinks) {
@@ -46,6 +48,15 @@ public class SafeAggregateSink implements ILogEventSink {
 				sink.emit(logEvent);
 			} catch (RuntimeException ex) {
 				SelfLog.writeLine("Caught exception %s while emitting to sink %s.", ex.getMessage(), sink);
+			}
+		}
+	}
+
+	@Override
+	public void close() throws IOException {
+		for (ILogEventSink sink : sinks) {
+			if (sink instanceof java.io.Closeable) {
+				((java.io.Closeable) sink).close();
 			}
 		}
 	}

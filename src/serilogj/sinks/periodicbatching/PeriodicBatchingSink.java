@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Executors;
 
 import serilogj.core.ILogEventSink;
 import serilogj.debugging.SelfLog;
@@ -43,10 +44,8 @@ public abstract class PeriodicBatchingSink implements ILogEventSink, Closeable {
 	private Queue<LogEvent> waitingBatch;
 
 	private Object syncLock = new Object();
-	private Timer timer;
-	private TimerTask task;
+	private ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
 	private volatile boolean unloading;
-	private volatile boolean started;
 
 	/**
 	 * Construct a sink posting to the specified database.
@@ -58,9 +57,12 @@ public abstract class PeriodicBatchingSink implements ILogEventSink, Closeable {
 
 		this.batchSizeLimit = batchSizeLimit;
 		queue = new ConcurrentLinkedQueue<LogEvent>();
-		timer = new Timer(true);
 		waitingBatch = new LinkedList<LogEvent>();
 		status = new BatchedConnectionStatus(period);
+		
+		// Assumes that subclass constructors will have finished
+		// executing within the interval.
+		setTimer(status.getNextInterval());
 	}
 
 	@Override
@@ -73,24 +75,6 @@ public abstract class PeriodicBatchingSink implements ILogEventSink, Closeable {
 			return;
 		}
 
-		if (!started) {
-			synchronized (syncLock) {
-				if (unloading) {
-					return;
-				}
-
-				if (!started) {
-					// Special handling to try to get the first event across as
-					// quickly
-					// as possible to show we're alive!
-					queue.add(logEvent);
-					started = true;
-					setTimer(Duration.ZERO);
-					return;
-				}
-			}
-		}
-
 		queue.add(logEvent);
 	}
 
@@ -99,20 +83,7 @@ public abstract class PeriodicBatchingSink implements ILogEventSink, Closeable {
 			return;
 		}
 
-		if (task != null) {
-			task.cancel();
-		}
-
-		task = new TimerTask() {
-
-			@Override
-			public void run() {
-				execute();
-			}
-		};
-
-		timer.purge();
-		timer.schedule(task, delay.getSeconds() * 1000);
+		ses.schedule(() -> execute(), delay.getSeconds(), TimeUnit.SECONDS);
 	}
 
 	private void execute() {
@@ -160,19 +131,20 @@ public abstract class PeriodicBatchingSink implements ILogEventSink, Closeable {
 	@Override
 	public void close() throws IOException {
 		synchronized (syncLock) {
-			if (!started || unloading) {
+			if (unloading) {
 				return;
 			}
 
 			unloading = true;
 		}
 
-		if (task != null) {
-			task.cancel();
-			timer.purge();
-			
-			execute();
+		ses.shutdownNow();
+		try {
+			ses.awaitTermination(5, TimeUnit.SECONDS);
+		} catch (InterruptedException ex) {
+			// No problem, we're shutting down
 		}
+		execute();
 	}
 
 	protected boolean canInclude(LogEvent event) {
