@@ -1,6 +1,8 @@
 package serilogj.core;
 
+import java.io.Closeable;
 import java.util.Date;
+import java.io.IOException;
 
 import serilogj.ILogger;
 import serilogj.core.enrichers.FixedPropertyEnricher;
@@ -24,10 +26,11 @@ import serilogj.parameters.MessageTemplateProcessorResult;
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-public class Logger implements ILogger, ILogEventSink {
-	private MessageTemplateProcessor messageTemplateProcessor;
-	private ILogEventSink sink;
-	private ILogEventEnricher[] enrichers;
+public class Logger implements ILogger, ILogEventSink, Closeable {
+	private final MessageTemplateProcessor messageTemplateProcessor;
+	private final ILogEventSink sink;
+	private final ILogEventEnricher[] enrichers;
+	private final Boolean closeSink;
 
 	// It's important that checking minimum level is a very
 	// quick (CPU-cacheable) read in the simple case, hence
@@ -38,7 +41,7 @@ public class Logger implements ILogger, ILogEventSink {
 	private LoggingLevelSwitch levelSwitch;
 
 	public Logger(MessageTemplateProcessor messageTemplateProcessor, LogEventLevel minimumLevel, ILogEventSink sink,
-			ILogEventEnricher[] enrichers, LoggingLevelSwitch levelSwitch) {
+			ILogEventEnricher[] enrichers, LoggingLevelSwitch levelSwitch, Boolean closeSink) {
 		if (sink == null) {
 			throw new IllegalArgumentException("sink");
 		}
@@ -51,6 +54,7 @@ public class Logger implements ILogger, ILogEventSink {
 		this.sink = sink;
 		this.levelSwitch = levelSwitch;
 		this.enrichers = enrichers;
+		this.closeSink = closeSink;
 	}
 
 	@Override
@@ -64,7 +68,7 @@ public class Logger implements ILogger, ILogEventSink {
 	@Override
 	public ILogger forContext(ILogEventEnricher[] enrichers) {
 		return new Logger(messageTemplateProcessor, minimumLevel, this,
-				enrichers != null ? enrichers : new ILogEventEnricher[0], levelSwitch);
+				enrichers != null ? enrichers : new ILogEventEnricher[0], levelSwitch, false);
 	}
 
 	@Override
@@ -113,6 +117,13 @@ public class Logger implements ILogger, ILogEventSink {
 		}
 
 		sink.emit(logEvent);
+	}
+	
+	@Override
+	public void close() throws IOException {
+		if (closeSink && sink instanceof java.io.Closeable) {
+			((java.io.Closeable) sink).close();
+		}
 	}
 
 	@Override

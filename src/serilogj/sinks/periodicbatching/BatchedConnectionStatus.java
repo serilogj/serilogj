@@ -6,8 +6,8 @@ public class BatchedConnectionStatus {
 	private static final Duration MinimumBackoffPeriod = Duration.ofSeconds(5);
 	private static final Duration MaximumBackoffInterval = Duration.ofMinutes(10);
 
-	private static final int FailuresBeforeDroppingBatch = 4;
-	private static final int FailuresBeforeDroppingQueue = 6;
+	private static final int FailuresBeforeDroppingBatch = 8;
+	private static final int FailuresBeforeDroppingQueue = 10;
 
 	private Duration period;
 

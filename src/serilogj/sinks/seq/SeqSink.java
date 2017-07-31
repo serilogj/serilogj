@@ -149,7 +149,7 @@ public class SeqSink extends PeriodicBatchingSink {
 				levelSwitch = new LoggingLevelSwitch(level);
 			}
 		} catch (IOException e) {
-			SelfLog.writeLine("Error sending events to seq, exception %s", e.getMessage());
+			SelfLog.writeLine("Error sending events to Seq, exception %s", e.getMessage());
 		}
 	}
 

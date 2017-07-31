@@ -129,6 +129,6 @@ public class LoggerConfiguration {
 				additionalDestructuringPolicies.toArray(new IDestructuringPolicy[0]));
 		MessageTemplateProcessor processor = new MessageTemplateProcessor(converter);
 
-		return new Logger(processor, minimumLevel, sink, enrichers.toArray(new ILogEventEnricher[0]), levelSwitch);
+		return new Logger(processor, minimumLevel, sink, enrichers.toArray(new ILogEventEnricher[0]), levelSwitch, true);
 	}
 }
