@@ -206,7 +206,7 @@ public class PropertyValueConverter implements ILogEventPropertyValueFactory, IL
 		Class<?> valueType = value.getClass();
 		Map<String, FieldAccess> fields = null;
 		try {
-			fields = Reflection.getPropertyFieldAccessMapFieldFirstForSerializer(valueType);
+			fields = Reflection.getPropertyFieldAccessMapPropertyFirstForSerializer(valueType);
 		} catch (Exception ex) {
 			SelfLog.writeLine("Exception %s caught while getting properties for %s.", ex, valueType.getName());
 			return result;
