@@ -4,7 +4,7 @@
 
   <groupId>serilogj</groupId>
   <artifactId>serilogj</artifactId>
-  <version>0.3</version>
+  <version>0.4</version>
   <name>serilogj</name>
   <url>https://github.com/80db/serilogj</url>
   <packaging>jar</packaging>
