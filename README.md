@@ -38,6 +38,5 @@ This source requires the [`io.advantageous.boon` package](https://mvnrepository.
 
 * Formatting is only partially supported (only for dates)
 * Only a limited amount of sinks have been converted (colored console, rolling file and Seq)
-* Cleanup of the logger is not properly done if the application closes (events might not all be send to Seq or written to disk)
 * See the [issues list](https://github.com/80dB/serilogj/issues) for up-for-grabs issues
  
