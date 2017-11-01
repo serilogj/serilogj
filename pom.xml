@@ -2,11 +2,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>serilogj</groupId>
+  <groupId>org.serilogj.serilogj</groupId>
   <artifactId>serilogj</artifactId>
-  <version>0.4</version>
+  <version>0.5.0</version>
   <name>serilogj</name>
-  <url>https://github.com/80db/serilogj</url>
+  <url>https://github.com/serilogj/serilogj</url>
   <packaging>jar</packaging>
   
   <developers>
@@ -28,17 +28,17 @@
   <build>
     <directory>${project.basedir}/bin</directory>
     <sourceDirectory>${project.basedir}/src</sourceDirectory>
-	<plugins>
-		<plugin>
-		  <groupId>org.apache.maven.plugins</groupId>
-		  <artifactId>maven-compiler-plugin</artifactId>
-		  <version>3.0</version>
-          <configuration>
-            <source>1.8</source>
-            <target>1.8</target>
-          </configuration>
-		</plugin>
-	</plugins>
+	  <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.0</version>
+            <configuration>
+              <source>1.8</source>
+              <target>1.8</target>
+            </configuration>
+      </plugin>
+    </plugins>
   </build>
    
   <dependencies>
@@ -48,4 +48,11 @@
   		<version>0.6.4</version>
   	</dependency>
   </dependencies>
+
+  <distributionManagement>
+    <repository>
+        <id>serilogj</id>
+        <url>https://api.bintray.com/maven/serilogj/serilogj/serilogj/;publish=1</url>
+    </repository>
+  </distributionManagement>
 </project>
