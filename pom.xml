@@ -4,7 +4,7 @@
 
   <groupId>org.serilogj.serilogj</groupId>
   <artifactId>serilogj</artifactId>
-  <version>0.5.0</version>
+  <version>0.5.1</version>
   <name>serilogj</name>
   <url>https://github.com/serilogj/serilogj</url>
   <packaging>jar</packaging>
@@ -22,7 +22,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	<java.version>1.8</java.version>
+    <java.version>1.8</java.version>
   </properties>
   
   <build>
@@ -33,10 +33,23 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.0</version>
-            <configuration>
-              <source>1.8</source>
-              <target>1.8</target>
-            </configuration>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
@@ -51,8 +64,8 @@
 
   <distributionManagement>
     <repository>
-        <id>serilogj</id>
-        <url>https://api.bintray.com/maven/serilogj/serilogj/serilogj/;publish=1</url>
+      <id>serilogj</id>
+      <url>https://api.bintray.com/maven/serilogj/serilogj/serilogj/;publish=1</url>
     </repository>
   </distributionManagement>
 </project>
