@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.function.Predicate;
+
 import serilogj.core.ILogEventSink;
 import serilogj.debugging.SelfLog;
 import serilogj.events.LogEvent;
@@ -132,8 +134,13 @@ public class RollingFileSink implements ILogEventSink, Closeable {
 
 		// Add our current log file (if it already exists, then first remove it,
 		// saves us checking if it's in the list)
-		String currentFilename = new File(currentFilePath).getName();
-		files.removeIf(f -> f.getFilename().compareToIgnoreCase(currentFilename) == 0);
+		final String currentFilename = new File(currentFilePath).getName();
+		files.removeIf(new Predicate<RollingLogFile>() {
+			@Override
+			public boolean test(RollingLogFile f) {
+				return f.getFilename().compareToIgnoreCase(currentFilename) == 0;
+			}
+		});
 		files.addAll(roller.getMatches(new String[] { currentFilename }));
 
 		// Sort it

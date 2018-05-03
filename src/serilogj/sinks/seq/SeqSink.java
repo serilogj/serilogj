@@ -13,6 +13,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.function.BiConsumer;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
@@ -116,7 +117,15 @@ public class SeqSink extends PeriodicBatchingSink {
 		try {
 			HttpURLConnection con = (HttpURLConnection) baseUrl.openConnection();
 			con.setRequestMethod("POST");
-			httpHeaders.forEach(con::setRequestProperty);
+			
+			//httpHeaders.forEach(con::setRequestProperty);
+			
+			//1.7 compat
+			for (Map.Entry<String, String> entry : httpHeaders.entrySet())
+			{
+				con.setRequestProperty(entry.getKey(), entry.getValue());
+			}
+			
 			con.setDoOutput(true);
 
 			OutputStream os = con.getOutputStream();

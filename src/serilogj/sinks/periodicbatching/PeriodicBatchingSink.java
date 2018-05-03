@@ -83,7 +83,12 @@ public abstract class PeriodicBatchingSink implements ILogEventSink, Closeable {
 			return;
 		}
 
-		ses.schedule(() -> execute(), delay.getSeconds(), TimeUnit.SECONDS);
+		ses.schedule(new Runnable() {
+			@Override
+			public void run() {
+				execute();
+			}
+		}, delay.getSeconds(), TimeUnit.SECONDS);
 	}
 
 	private void execute() {

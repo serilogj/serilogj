@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import io.advantageous.boon.core.Conversions;
 import io.advantageous.boon.core.Typ;
@@ -138,7 +139,7 @@ public class PropertyValueConverter implements ILogEventPropertyValueFactory, IL
 		return createPropertyValue(value, destructureObjects, 1);
 	}
 
-	private LogEventPropertyValue createPropertyValue(Object value, Destructuring destructuring, int depth) {
+	private LogEventPropertyValue createPropertyValue(Object value, final Destructuring destructuring, int depth) {
 		if (value == null) {
 			return NullScalarValue;
 		}
@@ -149,7 +150,7 @@ public class PropertyValueConverter implements ILogEventPropertyValueFactory, IL
 
 		Class<?> valueType = value.getClass();
 
-		DepthLimiter limiter = new DepthLimiter(depth, maximumDestructuringDepth, this);
+		final DepthLimiter limiter = new DepthLimiter(depth, maximumDestructuringDepth, this);
 		for (IScalarConversionPolicy scalarConversionPolicy : scalarConversionPolicies) {
 			ScalarConversionPolicyResult result = scalarConversionPolicy.tryConvertToScalar(value, limiter);
 			if (result.isValid) {
@@ -169,9 +170,14 @@ public class PropertyValueConverter implements ILogEventPropertyValueFactory, IL
 		if (Typ.isMap(valueType)) {
 			@SuppressWarnings("unchecked")
 			Map<Object, Object> map = (Map<Object, Object>) value;
-			Map<ScalarValue, LogEventPropertyValue> dict = new HashMap<ScalarValue, LogEventPropertyValue>();
-			map.forEach((k, v) -> dict.put((ScalarValue) limiter.createPropertyValue(k, false),
-					limiter.createPropertyValue(v, destructuring)));
+			final Map<ScalarValue, LogEventPropertyValue> dict = new HashMap<ScalarValue, LogEventPropertyValue>();
+			map.forEach(new BiConsumer<Object, Object>() {
+				@Override
+				public void accept(Object k, Object v) {
+					dict.put((ScalarValue) limiter.createPropertyValue(k, false),
+							limiter.createPropertyValue(v, destructuring));
+				}
+			});
 			return new DictionaryValue(dict);
 		}
 
