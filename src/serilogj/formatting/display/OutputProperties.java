@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import serilogj.events.LogEvent;
 import serilogj.events.LogEventPropertyValue;
@@ -61,8 +62,13 @@ public class OutputProperties {
 	 * @return A dictionary with properties representing the log event.
 	 */
 	public static Map<String, LogEventPropertyValue> GetOutputProperties(LogEvent logEvent) {
-		Map<String, LogEventPropertyValue> result = new HashMap<String, LogEventPropertyValue>();
-		logEvent.getProperties().forEach((k, v) -> result.put(k, v));
+		final Map<String, LogEventPropertyValue> result = new HashMap<String, LogEventPropertyValue>();
+		logEvent.getProperties().forEach(new BiConsumer<String, LogEventPropertyValue>() {
+			@Override
+			public void accept(String k, LogEventPropertyValue v) {
+				result.put(k, v);
+			}
+		});
 
 		// "Special" output properties like Message will override any properties
 		// with the same name

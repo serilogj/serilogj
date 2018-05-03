@@ -2,6 +2,8 @@ package serilogj.events;
 
 import java.io.*;
 import java.util.*;
+import java.util.Map.Entry;
+import java.util.function.Consumer;
 
 public class DictionaryValue extends LogEventPropertyValue {
 	private Map<ScalarValue, LogEventPropertyValue> elements;
@@ -12,7 +14,12 @@ public class DictionaryValue extends LogEventPropertyValue {
 		}
 
 		this.elements = new HashMap<ScalarValue, LogEventPropertyValue>();
-		elements.forEach(e -> this.elements.put(e.getKey(), e.getValue()));
+		elements.forEach(new Consumer<Entry<ScalarValue, LogEventPropertyValue>>() {
+			@Override
+			public void accept(Entry<ScalarValue, LogEventPropertyValue> e) {
+				DictionaryValue.this.elements.put(e.getKey(), e.getValue());
+			}
+		});
 	}
 
 	public DictionaryValue(Map<ScalarValue, LogEventPropertyValue> elements) {

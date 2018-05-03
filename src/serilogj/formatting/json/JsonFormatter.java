@@ -82,23 +82,108 @@ public class JsonFormatter implements ITextFormatter {
 		this.locale = locale;
 
 		literalWriters = new HashMap<Class<?>, WriterConsumer>();
-		literalWriters.put(boolean.class, (v, q, o) -> writeBoolean(v, q, o));
-		literalWriters.put(Character.class, (v, q, o) -> writeString(v, q, o));
-		literalWriters.put(Byte.class, (v, q, o) -> writeToString(v, q, o));
-		literalWriters.put(Short.class, (v, q, o) -> writeToString(v, q, o));
-		literalWriters.put(Integer.class, (v, q, o) -> writeToString(v, q, o));
-		literalWriters.put(Long.class, (v, q, o) -> writeToString(v, q, o));
-		literalWriters.put(Float.class, (v, q, o) -> writeFloat(v, q, o));
-		literalWriters.put(Double.class, (v, q, o) -> writeFloat(v, q, o));
-		literalWriters.put(String.class, (v, q, o) -> writeString(v, q, o));
-		literalWriters.put(ScalarValue.class, (v, q, o) -> writeLiteral(((ScalarValue) v).getValue(), q, o));
-		literalWriters.put(SequenceValue.class, (v, q, o) -> writeSequence(v, q, o));
-		literalWriters.put(DictionaryValue.class, (v, q, o) -> writeDictionary(v, q, o));
-		literalWriters.put(StructureValue.class, (v, q, o) -> writeStructure(v, q, o));
-		literalWriters.put(Date.class, (v, q, o) -> writeDate(v, q, o));
-		literalWriters.put(LocalDate.class, (v, q, o) -> writeTemporal(v, q, o));
-		literalWriters.put(LocalDateTime.class, (v, q, o) -> writeTemporal(v, q, o));
-		literalWriters.put(ZonedDateTime.class, (v, q, o) -> writeTemporal(v, q, o));
+		literalWriters.put(boolean.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeBoolean(v, q, o);
+			}
+		});
+		literalWriters.put(Character.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeString(v, q, o);
+			}
+		});
+		literalWriters.put(Byte.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeToString(v, q, o);
+			}
+		});
+		literalWriters.put(Short.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeToString(v, q, o);
+			}
+		});
+		literalWriters.put(Integer.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeToString(v, q, o);
+			}
+		});
+		literalWriters.put(Long.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeToString(v, q, o);
+			}
+		});
+		literalWriters.put(Float.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeFloat(v, q, o);
+			}
+		});
+		literalWriters.put(Double.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeFloat(v, q, o);
+			}
+		});
+		literalWriters.put(String.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeString(v, q, o);
+			}
+		});
+		literalWriters.put(ScalarValue.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeLiteral(((ScalarValue) v).getValue(), q, o);
+			}
+		});
+		literalWriters.put(SequenceValue.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeSequence(v, q, o);
+			}
+		});
+		literalWriters.put(DictionaryValue.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeDictionary(v, q, o);
+			}
+		});
+		literalWriters.put(StructureValue.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeStructure(v, q, o);
+			}
+		});
+		literalWriters.put(Date.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeDate(v, q, o);
+			}
+		});
+		literalWriters.put(LocalDate.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeTemporal(v, q, o);
+			}
+		});
+		literalWriters.put(LocalDateTime.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeTemporal(v, q, o);
+			}
+		});
+		literalWriters.put(ZonedDateTime.class, new WriterConsumer() {
+			@Override
+			public void apply(Object v, Boolean q, Writer o) throws IOException {
+				writeTemporal(v, q, o);
+			}
+		});
 	}
 
 	@Override

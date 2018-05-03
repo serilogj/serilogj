@@ -1,6 +1,7 @@
 package serilogj.core.sinks;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.io.*;
 import serilogj.events.*;
 import serilogj.*;
@@ -38,8 +39,13 @@ public class SecondaryLoggerSink implements ILogEventSink, java.io.Closeable {
 			throw new IllegalArgumentException("logEvent");
 		}
 
-		ArrayList<LogEventProperty> properties = new ArrayList<LogEventProperty>();
-		logEvent.getProperties().forEach((k, v) -> properties.add(new LogEventProperty(k, v)));
+		final ArrayList<LogEventProperty> properties = new ArrayList<LogEventProperty>();
+		logEvent.getProperties().forEach(new BiConsumer<String, LogEventPropertyValue>() {
+			@Override
+			public void accept(String k, LogEventPropertyValue v) {
+				properties.add(new LogEventProperty(k, v));
+			}
+		});
 		LogEvent copy = new LogEvent(logEvent.getTimestamp(), logEvent.getLevel(), logEvent.getException(),
 				logEvent.getMessageTemplate(), null);
 
