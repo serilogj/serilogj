@@ -7,6 +7,10 @@ _serilogj_ is a structured logger that is an almost 1-on-1 code conversion of [S
 Set up the logger using the desired settings, as such:
 
 ```java
+// import static serilogj.sinks.coloredconsole.ColoredConsoleSinkConfigurator.*;
+// import static serilogj.sinks.rollingfile.RollingFileSinkConfigurator.*;
+// import static serilogj.sinks.seq.SeqSinkConfigurator.*;
+
 Log.setLogger(new LoggerConfiguration()
 	.writeTo(coloredConsole())
 	.writeTo(rollingFile("test-{Date}.log"), LogEventLevel.Information)
