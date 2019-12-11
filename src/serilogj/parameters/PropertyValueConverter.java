@@ -5,16 +5,11 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
+import java.lang.reflect.Array;
 
-import io.advantageous.boon.core.Conversions;
-import io.advantageous.boon.core.Typ;
-import io.advantageous.boon.core.reflection.Reflection;
-import io.advantageous.boon.core.reflection.fields.FieldAccess;
+import serilogj.reflection.Reflection;
+import serilogj.reflection.Property;
 import serilogj.core.DestructuringPolicyResult;
 import serilogj.core.IDestructuringPolicy;
 import serilogj.core.ILogEventPropertyFactory;
@@ -166,7 +161,7 @@ public class PropertyValueConverter implements ILogEventPropertyValueFactory, IL
 			}
 		}
 
-		if (Typ.isMap(valueType)) {
+		if (Map.class.isAssignableFrom(valueType)) {
 			@SuppressWarnings("unchecked")
 			Map<Object, Object> map = (Map<Object, Object>) value;
 			Map<ScalarValue, LogEventPropertyValue> dict = new HashMap<ScalarValue, LogEventPropertyValue>();
@@ -177,7 +172,7 @@ public class PropertyValueConverter implements ILogEventPropertyValueFactory, IL
 
 		if (value instanceof Iterable || valueType.isArray()) {
 			ArrayList<Object> list = new ArrayList<Object>();
-			Conversions.unifyListOrArray(value, list);
+			Reflection.unifyListOrArray(value, list);
 
 			ArrayList<LogEventPropertyValue> elements = new ArrayList<LogEventPropertyValue>();
 			for (Object o : list) {
@@ -198,38 +193,28 @@ public class PropertyValueConverter implements ILogEventPropertyValueFactory, IL
 		return new ScalarValue(value.toString());
 	}
 
+
 	private ArrayList<LogEventProperty> getProperties(Object value, ILogEventPropertyValueFactory recursive) {
 		ArrayList<LogEventProperty> result = new ArrayList<LogEventProperty>();
 		if (value == null) {
 			return result;
 		}
 		Class<?> valueType = value.getClass();
-		Map<String, FieldAccess> fields = null;
+		Map<String, Property> fields = null;
 		try {
-			fields = Reflection.getPropertyFieldAccessMapPropertyFirstForSerializer(valueType);
+			fields = Reflection.getProperties(valueType);
 		} catch (Exception ex) {
 			SelfLog.writeLine("Exception %s caught while getting properties for %s.", ex, valueType.getName());
 			return result;
 		}
 
-		for (Map.Entry<String, FieldAccess> pair : fields.entrySet()) {
-			if (pair.getValue().isStatic() || pair.getValue().isWriteOnly()) {
-				continue;
-			}
-
-			if (pair.getValue().getField() != null) {
-				int mod = pair.getValue().getField().getModifiers();
-				if (Modifier.isPrivate(mod) || Modifier.isProtected(mod)) {
-					continue;
-				}
-			}
-
+		for (Map.Entry<String, Property> pair : fields.entrySet()) {
 			try {
 				Object propertyValue = pair.getValue().getValue(value);
-				result.add(new LogEventProperty(pair.getValue().alias(),
+				result.add(new LogEventProperty(pair.getValue().getAlias(),
 						recursive.createPropertyValue(propertyValue, true)));
 			} catch (Exception ex) {
-				SelfLog.writeLine("Exception %s caught while getting property %s.", ex, pair.getValue().alias());
+				SelfLog.writeLine("Exception %s caught while getting property %s.", ex, pair.getValue().getAlias());
 			}
 		}
 		return result;
