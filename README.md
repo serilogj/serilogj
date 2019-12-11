@@ -34,10 +34,6 @@ Log.error("Hello {world} {@user}", "wereld", user);
 Log.fatal("Hello {world} {@user}", "wereld", user);
 ```
 
-## Requires
-
-This source requires the [`io.advantageous.boon` package](https://mvnrepository.com/artifact/io.advantageous.boon) for reflection.
-
 ## Known issues
 
 * Formatting is only partially supported (only for dates)
