@@ -4,7 +4,7 @@
 
   <groupId>org.serilogj.serilogj</groupId>
   <artifactId>serilogj</artifactId>
-  <version>0.6.0</version>
+  <version>0.6.1</version>
   <name>serilogj</name>
   <url>https://github.com/serilogj/serilogj</url>
   <packaging>jar</packaging>

@@ -150,6 +150,11 @@ public class Reflection {
             if (method.getReturnType() == Void.class) {
                 continue;
             }
+
+            int modifiers = method.getModifiers();
+            if (Modifier.isStatic(modifiers) || Modifier.isPrivate(modifiers) || Modifier.isProtected(modifiers)) {
+                continue;
+            }
             
             String alias = null;
             String name = method.getName();
@@ -168,6 +173,8 @@ public class Reflection {
             }
 
             alias = alias.substring(0, 1).toLowerCase() + (alias.length() > 1 ? alias.substring(1) : "");
+            
+            method.setAccessible(true);
             methods.put(alias, new MethodProperty(method, alias));
         }
 
