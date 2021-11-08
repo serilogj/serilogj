@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.serilogj.serilogj</groupId>
+  <groupId>org.serilogj</groupId>
   <artifactId>serilogj</artifactId>
   <version>0.6.1</version>
   <name>serilogj</name>
@@ -56,8 +56,9 @@
 
   <distributionManagement>
     <repository>
-      <id>serilogj</id>
-      <url>https://api.bintray.com/maven/serilogj/serilogj/serilogj/;publish=1</url>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/serilogj/serilogj</url>
     </repository>
   </distributionManagement>
 </project>

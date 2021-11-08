@@ -1,4 +1,4 @@
-# serilogj [![Bintray](https://img.shields.io/bintray/v/serilogj/serilogj/serilogj.svg)](https://bintray.com/serilogj/serilogj/serilogj)
+# serilogj
 
 _serilogj_ is a structured logger that is an almost 1-on-1 code conversion of [Serilog for .NET](https://serilog.net). Not everything has been converted, but the a lot of functionality is included in this conversion. Using this in combination with [Seq](https://getseq.net) will make searching through log files a lot easier.
 
